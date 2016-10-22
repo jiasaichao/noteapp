@@ -8,7 +8,10 @@
  */
 
 #import "AppDelegate.h"
-
+// **********************************************
+// *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
+// **********************************************
+#import "RCCManager.h"
 #import "RCTBundleURLProvider.h"
 #import "RCTRootView.h"
 
@@ -20,6 +23,16 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 
+  // **********************************************
+  // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****
+  // **********************************************
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  self.window.backgroundColor = [UIColor whiteColor];
+  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation];
+  
+  
+  /*
+   // original RN bootstrap - remove this part
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"noteApp"
                                                initialProperties:nil
@@ -31,6 +44,8 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+   */
+   
   return YES;
 }
 
