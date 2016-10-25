@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import {
     StyleSheet,
     Text,
@@ -22,6 +23,8 @@ import {
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {NotesAction} from '../actions/notes'
+
 let width = Dimensions.get('window').width;
 let height = Dimensions.get('window').height;
 class Home extends Component {
@@ -32,6 +35,27 @@ class Home extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            refreshing: false,
+        };
+
+    }
+    componentDidMount() {
+        console.log(global.storage);
+        global.storage.getAllDataForKey('notes').then(data => {
+            this.props.dispatch(NotesAction(data));
+            //this.setState({ dataSource: this.state.dataSource.cloneWithRows(data) });
+        });
+    }
+    _renderRow = (data) => {
+        return (<View style={styles.listItem}>
+            <TouchableOpacity style={styles.checkbox}></TouchableOpacity>
+            <Text style={styles.lable}>{data.content}</Text>
+        </View>);
+    }
+    _onRefresh = () => {
+        //this.setState({ refreshing: true });
+       
     }
     _add = () => {
         this.props.navigator.showModal({
@@ -40,8 +64,28 @@ class Home extends Component {
         });
     }
     render() {
+        console.log('渲染',this.props);
+        var ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+        let dataSource= ds.cloneWithRows(this.props.data);
         return (
             <View style={styles.root}>
+                <ListView
+                    dataSource={dataSource}
+                    renderRow={this._renderRow}
+                    enableEmptySections={true}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
+                            tintColor='#ff6600'
+                            title='拼命加载中...'
+                            />
+                    }
+                    />
+
+
                 <TouchableOpacity onPress={this._add} style={{
                     borderRadius: 15,
                     height: 30,
@@ -72,6 +116,24 @@ var styles = StyleSheet.create({
         backgroundColor: '#f2f2f2',
         //height: height
     },
+    listItem: {
+        height: 40,
+        borderBottomWidth: 1,
+        borderBottomColor: '#cccccc',
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    checkbox: {
+        height: 20,
+        width: 20,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#000',
+        marginLeft: 8,
+    },
+    lable: {
+        marginLeft: 8,
+    },
     bottom: {
         flexDirection: 'row',
         position: 'absolute',
@@ -92,5 +154,9 @@ var styles = StyleSheet.create({
         paddingRight: 8,
     }
 })
-
-export { Home }
+function mapStateToProps(state) {
+  return {
+    data: state.notes
+  };
+}
+export default connect(mapStateToProps)(Home);

@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import {
     AppRegistry,
     StyleSheet,
@@ -24,11 +25,13 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-import {Button} from "../components"
+import { Button } from "../components"
+import {NotesAction} from '../actions/notes'
 
 class AddNotes extends Component {
     constructor(props) {
         super(props);
+        this.input={}
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     static navigatorStyle = {
@@ -44,17 +47,25 @@ class AddNotes extends Component {
             }
         ]
     };
-
+    _add = () => {
+        global.storage.save({key:'notes',id:global.getId().toString(),rawData:{content:this.input.content}});
+        global.storage.getAllDataForKey('notes').then(data => {
+            this.props.dispatch(NotesAction(data));
+            //this.setState({ dataSource: this.state.dataSource.cloneWithRows(data) });
+        });
+        this.props.navigator.dismissModal();
+    }
+    
     render() {
-        
+
         return (
             <View style={styles.container}>
-                <TextInput style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
-                <Button.Submit style={{position:'absolute',bottom:16}} lable='保存' />
+                <TextInput autoCapitalize='none' onChangeText={(text) => {  this.input.content = text;} } style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
+                <Button.Submit onPress={this._add} style={{ position: 'absolute', bottom: 16 }} lable='保存' />
             </View>
         )
     }
-    onNavigatorEvent=(event)=> { // this is the onPress handler for the two buttons together
+    onNavigatorEvent = (event) => { // this is the onPress handler for the two buttons together
         if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
             if (event.id == 'cancel') { // this is the same id field from the static navigatorButtons definition
                 this.props.navigator.dismissModal();
@@ -78,4 +89,9 @@ var styles = StyleSheet.create({
     }
 })
 
-export { AddNotes }
+function mapStateToProps(state) {
+  return {
+    data: state.notes
+  };
+}
+export default connect(mapStateToProps)(AddNotes);

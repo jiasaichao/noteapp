@@ -1,8 +1,11 @@
 
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { registerScreens } from './containers';
-registerScreens();
+import { store } from './store';
+registerScreens(store,Provider);
 
 var settingsIcon;
 var settingsOutlineIcon;
@@ -25,6 +28,9 @@ export default class App {
         }).catch((error) => {
             //console.error(error);
         });
+        // 手动订阅 redux 因为react-redux只适用于react组件，这个是一个普通的类
+        // store.subscribe(this.onStoreUpdate.bind(this));
+        // store.dispatch(appActions.appInitialized());
     }
 
     _populateIcons = () => {
