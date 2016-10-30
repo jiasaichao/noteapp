@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import * as notesAction from '../actions/notes'
+import { connect } from 'react-redux';
 import {
     AppRegistry,
     StyleSheet,
@@ -26,12 +27,11 @@ import {
 } from 'react-native';
 
 import { Button } from "../components"
-import {NotesAction} from '../actions/notes'
 
 class AddNotes extends Component {
     constructor(props) {
         super(props);
-        this.input={}
+        this.input = {}
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     static navigatorStyle = {
@@ -48,19 +48,18 @@ class AddNotes extends Component {
         ]
     };
     _add = () => {
-        global.storage.save({key:'notes',id:global.getId().toString(),rawData:{content:this.input.content}});
-        global.storage.getAllDataForKey('notes').then(data => {
-            this.props.dispatch(NotesAction(data));
-            //this.setState({ dataSource: this.state.dataSource.cloneWithRows(data) });
+        
+        this.props.dispatch(notesAction.AddNotesAction(this.input.content)).then(() => {
+            this.props.navigator.dismissModal();
         });
-        this.props.navigator.dismissModal();
+
     }
-    
+
     render() {
 
         return (
             <View style={styles.container}>
-                <TextInput autoCapitalize='none' onChangeText={(text) => {  this.input.content = text;} } style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
+                <TextInput autoCapitalize='none' onChangeText={(text) => { this.input.content = text; } } style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
                 <Button.Submit onPress={this._add} style={{ position: 'absolute', bottom: 16 }} lable='保存' />
             </View>
         )
@@ -89,9 +88,16 @@ var styles = StyleSheet.create({
     }
 })
 
-function mapStateToProps(state) {
-  return {
-    data: state.notes
-  };
+const mapStateToProps = (state) => {
+    return {
+        data: state.notes
+    };
 }
+// const mapDispatchToProps = (dispatch) =>{
+//   return {
+//     setSelectedAddress: (address, token) => {
+//       dispatch(addressActions.setSelectedAddress(address, token))
+//     }
+//   }
+// }
 export default connect(mapStateToProps)(AddNotes);
