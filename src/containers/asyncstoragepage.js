@@ -28,11 +28,10 @@ import {
 import { Button } from "../components"
 import {NotesAction} from '../actions/notes'
 
-class Detail extends Component {
+class AsyncStoragePage extends Component {
     constructor(props) {
         super(props);
         this.input={}
-        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     static navigatorStyle = {
         navBarBackgroundColor: '#0cbaa0',
@@ -51,21 +50,12 @@ class Detail extends Component {
     }
     
     render() {
-        console.log(this.props.data);
-console.log(this.props);
         return (
             <View style={styles.container}>
                 <TextInput autoCapitalize='none' onChangeText={(text) => {  this.input.content = text;} } style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
                 <Button.Submit onPress={this._add} style={{ position: 'absolute', bottom: 16 }} lable='保存' />
             </View>
         )
-    }
-    onNavigatorEvent = (event) => { // this is the onPress handler for the two buttons together
-        if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
-            if (event.id == 'cancel') { // this is the same id field from the static navigatorButtons definition
-                this.props.navigator.dismissModal();
-            }
-        }
     }
 
 }
@@ -89,4 +79,4 @@ function mapStateToProps(state) {
     data: state.notes
   };
 }
-export default connect(mapStateToProps)(Detail);
+export default connect(mapStateToProps)(AsyncStoragePage);

@@ -1,5 +1,6 @@
 import * as ActionTypes from '../actions/notes'
 /**默认值 */
+{}
 const initialState = [];
 /** */
 export const NotesReducer = (state=initialState, action)=>{

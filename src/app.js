@@ -1,26 +1,15 @@
 
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import Global from './util/global';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { registerScreens } from './containers';
 import { store } from './store';
 registerScreens(store,Provider);
 
-var settingsIcon;
-var settingsOutlineIcon;
-var peopleIcon;
-var iosNavigateOutline;
-var iosNavigate;
-
 export default class App {
     constructor() {
-        this.ios_videocam_outline;
-        this.ios_videocam;
-        this.ios_recording_outline;
-        this.ios_recording;
-        this.ios_more_outline;
-        this.ios_more;
         this._populateIcons().then(() => {
             //console.log(this.ios_more);
             // 加载所有图片启动程序
@@ -43,15 +32,11 @@ export default class App {
                     Icon.getImageSource('ios-recording-outline', 30),
                     Icon.getImageSource('ios-recording', 30),
                     Icon.getImageSource('ios-more-outline', 30),
-                    Icon.getImageSource('ios-more', 30)
+                    Icon.getImageSource('ios-more', 30),
+                    Icon.getImageSource('md-settings', 30)
                 ]
             ).then((values) => {
-                this.ios_videocam_outline = values[0];
-                this.ios_videocam = values[1];
-                this.ios_recording_outline = values[2];
-                this.ios_recording = values[3];
-                this.ios_more_outline = values[4];
-                this.ios_more = values[5];
+                Global.icons.md_settings=values[6];
                 resolve(true);
             }).catch((error) => {
                 reject(error);
@@ -70,9 +55,16 @@ export default class App {
             screen: {
                 screen: 'home', // unique ID registered with Navigation.registerScreen
                 title: '待办事项', // title of the screen as appears in the nav bar (optional)
-                navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
-                navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
+                //navigatorStyle: {}, // override the navigator style for the screen, see "Styling the navigator" below (optional)
+                //navigatorButtons: {} // override the nav buttons for the screen, see "Adding buttons to the navigator" below (optional)
             },
+            /**侧边抽屉 */
+            drawer:{
+                left:{
+                    screen:'menu'
+                },
+                disableOpenGesture: true
+            }
             // drawer: { // optional, add this if you want a side menu drawer in your app
             //     left: { // optional, define if you want a drawer from the left
             //         screen: 'edit' // unique ID registered with Navigation.registerScreen
