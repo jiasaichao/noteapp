@@ -129,7 +129,8 @@ class Home extends Component {
                     justifyContent: 'center',
                     position: 'absolute',
                     right: 16,
-                    bottom: 16
+                    bottom: 16,
+                    overflow:'hidden'
                 }}>
                     <Icon name="md-add" size={25} color="#fff" />
                 </TouchableOpacity>
