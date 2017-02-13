@@ -25,6 +25,7 @@ import {
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as Actions from '../actions/notes'
+import * as dataBaseActions from '../actions/database'
 
 let width = Dimensions.get('window').width;
 let height = Dimensions.get('window').height;
@@ -55,6 +56,8 @@ class Home extends Component {
     }
     componentDidMount() {
         this.props.dispatch(Actions.GetAllNotesAction());
+        this.props.dispatch(dataBaseActions.GetDataAction());
+
     }
     onNavigatorEvent = (event) => { // this is the onPress handler for the two buttons together
         if (event.type == 'NavBarButtonPress') { // this is the event type for button presses
