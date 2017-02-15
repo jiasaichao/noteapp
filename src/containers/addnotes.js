@@ -49,9 +49,8 @@ class AddNotes extends Component {
     };
     _add = () => {
         
-        this.props.dispatch(notesAction.AddNotesAction(this.input.content)).then(() => {
-            this.props.navigator.dismissModal();
-        });
+        this.props.dispatch(notesAction.AddNotesAction({content:this.input.content,createDate:new Date().getTime()}));
+        this.props.navigator.dismissModal();
 
     }
 

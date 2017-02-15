@@ -6,7 +6,7 @@ const initialState = [];
 export const NotesReducer = (state=initialState, action)=>{
   switch(action.type){
       case ActionTypes.NOTES:
-      return {...state, ...action.data};
+      return action.data;
     default:
       return state;
   }

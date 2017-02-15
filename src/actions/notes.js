@@ -1,27 +1,32 @@
 export const NOTES = 'NOTES'
-export const NotesAction = (data) => {
-    return {
+function getData() {
+    return global.Loki.collections.find((value) => value.name === 'notes');
+}
+export const NotesAction = (data) => (dispatch) => {
+    let data1 = JSON.parse(JSON.stringify(data));
+    dispatch({
         type: NOTES,
-        data,
-    }
-}
-/**添加 */
-export const AddNotesAction = data => dispatch => {
-    global.storage.save({ key: 'notes', id: global.getId().toString(), rawData: { content: data } });
-    return dispatch(getAllNotesAction());
-}
-/**获取所有 */
-export const GetAllNotesAction = () => dispatch => {
-    return global.storage.getAllDataForKey('notes').then(data => {
-        //   // 返回一个异步操作
-        // return new Promise(function(resolve, reject) {
-        //   // ... some code
-        //   if (/* 异步操作成功 */){
-        //     resolve(value);
-        //   } else {
-        //     reject(error);
-        //   }
-        // });
-        dispatch(NotesAction(data));
+        data: data1,
     });
 }
+
+export const RemoveNotesAction = (id) => (dispatch) => {
+    getData().remove(id);
+    return GetNotesAction(dispatch);
+}
+export const SetNotesAction = (data) => (dispatch) => {
+    getData().update(data);
+    return GetNotesAction(dispatch);
+}
+export const AddNotesAction = (data) => (dispatch) => {
+    let lokiData = getData();
+    data.sort = lokiData.maxId + 1;
+    lokiData.insert(data);
+    return GetNotesAction(dispatch);
+}
+
+export const GetNotesAction = (dispatch) => {
+    let data = getData().data;
+    dispatch(NotesAction(data));
+}
+

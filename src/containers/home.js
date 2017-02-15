@@ -55,8 +55,9 @@ class Home extends Component {
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     componentDidMount() {
-        this.props.dispatch(Actions.GetAllNotesAction());
-        this.props.dispatch(dataBaseActions.GetDataAction());
+        this.props.dispatch(dataBaseActions.GetDataAction(()=>{
+            Actions.GetNotesAction(this.props.dispatch)
+        }));
 
     }
     onNavigatorEvent = (event) => { // this is the onPress handler for the two buttons together
@@ -101,7 +102,7 @@ class Home extends Component {
         });
     }
     render() {
-        //console.log('渲染',this.props);
+        console.log('渲染',this.props);
         var ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
