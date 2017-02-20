@@ -1,9 +1,10 @@
 import {combineReducers} from 'redux';
-import {NotesReducer} from './notes';
+import {NotesReducer,FolderReducer} from './notes';
 /**
  * 合并reducers
  */
 const index = combineReducers({
-  notes:NotesReducer,
+  notesList:NotesReducer,
+  folderList:FolderReducer
 })
 export default index;

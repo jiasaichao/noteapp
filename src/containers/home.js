@@ -36,13 +36,13 @@ class Home extends Component {
         navBarButtonColor: '#fff',
     };
     static navigatorButtons = {
-        // leftButtons: [{
-        //     icon:require('../assets/img/navicon_menu.png'),
-        //     //icon:Global.icons.md_settings,
-        //     id: 'menu'
-        // }],
+        leftButtons: [{
+            icon: require('../assets/img/navicon_menu.png'),
+            //icon:Global.icons.md_settings,
+            id: 'menu'
+        }],
         rightButtons: [{
-            icon:require('../assets/img/md_settings.png'),
+            icon: require('../assets/img/md_settings.png'),
             //icon:Global.icons.md_settings,
             id: 'settings'
         }],
@@ -55,7 +55,7 @@ class Home extends Component {
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     componentDidMount() {
-        this.props.dispatch(dataBaseActions.GetDataAction(()=>{
+        this.props.dispatch(dataBaseActions.GetDataAction(() => {
             Actions.GetNotesAction(this.props.dispatch)
         }));
 
@@ -68,12 +68,12 @@ class Home extends Component {
                     animated: true
                 });
             }
-            if(event.id=='settings'){
+            if (event.id == 'settings') {
                 this.props.navigator.push({
-            screen: 'test.img',
-            title: 'title',
-            backButtonTitle: '返回',
-        });
+                    screen: 'test.img',
+                    title: 'title',
+                    backButtonTitle: '返回',
+                });
             }
         }
     }
@@ -102,7 +102,7 @@ class Home extends Component {
         });
     }
     render() {
-        console.log('渲染',this.props);
+        //console.log('渲染',this.props);
         var ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
@@ -119,11 +119,9 @@ class Home extends Component {
                             onRefresh={this._onRefresh}
                             tintColor='#ff6600'
                             title='拼命加载中...'
-                            />
+                        />
                     }
-                    />
-
-
+                />
                 <TouchableOpacity onPress={this._add} style={{
                     borderRadius: 15,
                     height: 30,
@@ -134,7 +132,7 @@ class Home extends Component {
                     position: 'absolute',
                     right: 16,
                     bottom: 16,
-                    overflow:'hidden'
+                    overflow: 'hidden'
                 }}>
                     <Icon name="md-add" size={25} color="#fff" />
                 </TouchableOpacity>
@@ -200,7 +198,8 @@ var styles = StyleSheet.create({
 })
 function mapStateToProps(state) {
     return {
-        data: state.notes
+        data: state.notesList,
+        folderList: state.folderList
     };
 }
 export default connect(mapStateToProps)(Home);
