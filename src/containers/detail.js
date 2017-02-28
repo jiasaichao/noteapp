@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
     AppRegistry,
     StyleSheet,
@@ -26,12 +26,12 @@ import {
 } from 'react-native';
 
 import { Button } from "../components"
-import {NotesAction} from '../actions/notes'
+import { NotesAction } from '../actions/notes'
 
 class Detail extends Component {
     constructor(props) {
         super(props);
-        this.input={}
+        this.input = {}
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     static navigatorStyle = {
@@ -49,13 +49,13 @@ class Detail extends Component {
     // };
     _add = () => {
     }
-    
+
     render() {
         console.log(this.props.data);
-console.log(this.props);
+        console.log(this.props);
         return (
             <View style={styles.container}>
-                <TextInput autoCapitalize='none' onChangeText={(text) => {  this.input.content = text;} } style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
+                <TextInput autoCapitalize='none' onChangeText={(text) => { this.input.content = text; }} style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
                 <Button.Submit onPress={this._add} style={{ position: 'absolute', bottom: 16 }} lable='保存' />
             </View>
         )
@@ -85,8 +85,8 @@ var styles = StyleSheet.create({
 })
 
 function mapStateToProps(state) {
-  return {
-    data: state.notes
-  };
+    return {
+        data: state.notes
+    };
 }
 export default connect(mapStateToProps)(Detail);
