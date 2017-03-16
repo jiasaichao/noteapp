@@ -7,6 +7,7 @@
 import React, { Component } from 'react';
 import * as notesAction from '../actions/notes'
 import { connect } from 'react-redux';
+import AnimatedOverlay from '../components/animatedoverlay';
 import {
     AppRegistry,
     StyleSheet,
@@ -67,22 +68,7 @@ class AddNotes extends Component {
             <View style={styles.container}>
                 <TextInput autoCapitalize='none' onChangeText={(text) => { this.input.content = text; }} style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
                 <Button.Submit onPress={this._add} style={{ position: 'absolute', bottom: 16 }} lable='保存' />
-                <Animated.View style={{
-                    position: 'absolute',
-                    height: 100,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    backgroundColor: '#666',
-                    transform: [{ translateY: this.state.bounceValue }]
-                }}>
-                    <View style={styles.listItem}>
-                        <TouchableOpacity onPress={() => this._pushDetail(data.id)} style={styles.touchLable}><Text style={styles.lable}>收件箱</Text></TouchableOpacity>
-                    </View>
-                    <View style={styles.listItem}>
-                        <TouchableOpacity onPress={() => this._pushDetail(data.id)} style={styles.touchLable}><Text style={styles.lable}>收件箱1</Text></TouchableOpacity>
-                    </View>
-                </Animated.View>
+
             </View>
         )
     }
@@ -92,17 +78,33 @@ class AddNotes extends Component {
                 this.props.navigator.dismissModal();
             }
             if (event.id == 'option') { // this is the same id field from the static navigatorButtons definition
-                let bounceValue = 0
-                console.log('bounceValue', this.state.bounceValue._value)
-                if (this.state.bounceValue._value == 0) {
-                    bounceValue = 100
-                }
-                Animated.spring(                          // 可选的基本动画类型: spring, decay, timing
-                    this.state.bounceValue,                 // 将`bounceValue`值动画化
-                    {
-                        toValue: bounceValue,                         // 将其值以动画的形式改到一个较小值
+                // let bounceValue = 0
+                // console.log('bounceValue', this.state.bounceValue._value)
+                // if (this.state.bounceValue._value == 0) {
+                //     bounceValue = 100
+                // }
+                // Animated.spring(                          // 可选的基本动画类型: spring, decay, timing
+                //     this.state.bounceValue,                 // 将`bounceValue`值动画化
+                //     {
+                //         toValue: bounceValue,                         // 将其值以动画的形式改到一个较小值
+                //         friction:9
+                //     }
+                // ).start();
+                this.props.navigator.showModal({
+                    screen: "showDown", // unique ID registered with Navigation.registerScreen
+                    animationType:'none',
+                    navigatorStyle: {
+                        navBarHidden:true,
+                        screenBackgroundColor: 'transparent',
+                        modalPresentationStyle: 'overCurrentContext',
                     }
-                ).start();
+                });
+                // this.props.navigator.showLightBox({
+                //     screen: 'showDown',
+                //     style: {
+                //         backgroundBlur: 'none',
+                //     },
+                // });
             }
         }
     }

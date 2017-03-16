@@ -4,6 +4,7 @@ import Home from './home';
 import AddNotes from './addnotes';
 import Detail from './detail';
 import Menu from './menu';
+import ShowDown from './showdown';
 import Folder from './folder';
 import AddFolder from './addfolder';
 import AsyncStoragePage from './asyncstoragepage';
@@ -24,4 +25,5 @@ export function registerScreens(store,Provider) {
   Navigation.registerComponent('list', () => Detail);
   Navigation.registerComponent('login', () => Detail);
   Navigation.registerComponent('slider', () => Detail);
+  Navigation.registerComponent('showDown', () => ShowDown,store,Provider);
 }
