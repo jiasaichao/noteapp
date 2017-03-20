@@ -25,10 +25,15 @@ import {
     Modal,
     TextInput,
     TouchableOpacity,
-    Animated
+    Animated,
+    Keyboard,
+    KeyboardAvoidingView
 } from 'react-native';
-
+import dismissKeyboard from 'dismissKeyboard';
+import { KeyboardHeight } from '../components/jianpan';
 import { Button } from "../components"
+let width = Dimensions.get('window').width;
+let height = Dimensions.get('window').height;
 
 class AddNotes extends Component {
     constructor(props) {
@@ -37,6 +42,7 @@ class AddNotes extends Component {
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
         this.state = {
             bounceValue: new Animated.Value(100),
+            bottom: 0
         };
     }
     static navigatorStyle = {
@@ -64,11 +70,20 @@ class AddNotes extends Component {
     }
 
     render() {
+        let { folderList, addNotes } = this.props;
+        this.props.navigator.setButtons({
+            //leftButtons: [], // see "Adding buttons to the navigator" below for format (optional)
+            rightButtons: [{
+                title: folderList.find((folder) => folder.$loki == addNotes.folderId).name, // for a textual button, provide the button title (label)
+                id: 'option', // ID为这个按钮，在onNavigatorEvent（事件）给予帮助了解哪个按钮被点击 
+            }], // see "Adding buttons to the navigator" below for format (optional)
+            //animated: true // does the change have transition animation or does it happen immediately (optional)
+        });
         return (
             <View style={styles.container}>
-                <TextInput autoCapitalize='none' onChangeText={(text) => { this.input.content = text; }} style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
-                <Button.Submit onPress={this._add} style={{ position: 'absolute', bottom: 16 }} lable='保存' />
-
+                <TextInput ref='inputContent' autoCapitalize='none' onChangeText={(text) => { this.input.content = text; }} style={styles.textInput} autoCorrect={false} multiline={true} placeholder="你希望做什么呢？" />
+                <Button.Submit onPress={this._add} lable='保存' />
+                <KeyboardHeight/>
             </View>
         )
     }
@@ -90,21 +105,26 @@ class AddNotes extends Component {
                 //         friction:9
                 //     }
                 // ).start();
-                this.props.navigator.showModal({
-                    screen: "showDown", // unique ID registered with Navigation.registerScreen
-                    animationType:'none',
-                    navigatorStyle: {
-                        navBarHidden:true,
-                        screenBackgroundColor: 'transparent',
-                        modalPresentationStyle: 'overCurrentContext',
-                    }
-                });
-                // this.props.navigator.showLightBox({
-                //     screen: 'showDown',
-                //     style: {
-                //         backgroundBlur: 'none',
-                //     },
+                // this.props.navigator.showModal({
+                //     screen: "showDown", // unique ID registered with Navigation.registerScreen
+                //     animationType:'none',
+                //     navigatorStyle: {
+                //         navBarHidden:true,
+                //         screenBackgroundColor: 'transparent',
+                //         modalPresentationStyle: 'overCurrentContext',
+                //     }
                 // });
+                //Keyboard.dismiss();
+
+                dismissKeyboard();
+                //this.refs.inputContent.blur();
+                this.props.navigator.showLightBox({
+                    screen: 'showDown',
+                    animationType: 'none',
+                    style: {
+                        backgroundBlur: 'none',
+                    },
+                });
             }
         }
     }
@@ -117,10 +137,11 @@ class AddNotes extends Component {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#6ff'
         //paddingTop: 23,
     },
     textInput: {
-        height: 400,
+        flex:1,
         paddingLeft: 8,
         paddingTop: 8,
         paddingRight: 8,
@@ -148,7 +169,9 @@ var styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        data: state.notes
+        data: state.notes,
+        addNotes: state.addNotes,
+        folderList: state.folderList
     };
 }
 // const mapDispatchToProps = (dispatch) =>{

@@ -20,3 +20,12 @@ export const FolderReducer = (state=initialState, action)=>{
       return state;
   }
 }
+
+export const AddNotesReducer = (state={folderId:1}, action)=>{
+  switch(action.type){
+      case ActionTypes.ADDNOTES:
+      return {...state,...action.data};
+    default:
+      return state;
+  }
+}

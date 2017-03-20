@@ -24,7 +24,8 @@ import {
 } from 'react-native';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
-import * as Actions from '../actions/notes'
+import * as Actions from '../actions/notes';
+import * as folderActions from '../actions/folder';
 import * as dataBaseActions from '../actions/database'
 
 let width = Dimensions.get('window').width;
@@ -56,7 +57,8 @@ class Home extends Component {
     }
     componentDidMount() {
         this.props.dispatch(dataBaseActions.GetDataAction(() => {
-            Actions.GetNotesAction(this.props.dispatch)
+            Actions.GetNotesAction(this.props.dispatch);
+            folderActions.GetFolderAction(this.props.dispatch);
         }));
 
     }

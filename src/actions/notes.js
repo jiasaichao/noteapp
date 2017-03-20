@@ -18,6 +18,10 @@ export const SetNotesAction = (data) => (dispatch) => {
     getData().update(data);
     return GetNotesAction(dispatch);
 }
+/**
+ * 添加清单
+ * @param {*} data 
+ */
 export const AddNotesAction = (data) => (dispatch) => {
     let lokiData = getData();
     data.sort = lokiData.maxId + 1;
@@ -30,3 +34,12 @@ export const GetNotesAction = (dispatch) => {
     dispatch(NotesAction(data));
 }
 
+
+//==================================AddNotesAction
+export const ADDNOTES = 'ADDNOTES'
+export const SetAddNotesAction = (data) => (dispatch) => {
+    dispatch({
+        type:ADDNOTES,
+        data
+    });
+}

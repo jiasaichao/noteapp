@@ -1,8 +1,8 @@
 import Loki from 'lokijs';
 import LokiReactNativeAdapter from 'loki-react-native-asyncstorage-adapter';
 //import {store} from '../store';
-import {AddFolderAction} from '../actions/folder';
-
+import { AddFolderAction } from '../actions/folder';
+import { store } from '../store';
 export const GET_DATA = 'GET_DATA'
 export const GetDataAction = (callback) => {
     return function () {
@@ -10,6 +10,8 @@ export const GetDataAction = (callback) => {
             //初始化
             global.Loki = new Loki('loki.json', { adapter: new LokiReactNativeAdapter() });
             global.Loki.loadDatabase({}, () => {
+                console.log('loadDatabase', global.Loki);
+                //是否以前存储过
                 if (!global.Loki.collections.find((value) => value.name === 'notes')) {
                     //默认表
                     /**
@@ -20,7 +22,6 @@ export const GetDataAction = (callback) => {
                      * sort
                      * state//状态0未完成，1已完成
                      * endDate//完成时间
-                     * 
                      */
                     global.Loki.addCollection('notes');
                     /**
@@ -29,15 +30,22 @@ export const GetDataAction = (callback) => {
                      * sort
                      */
                     global.Loki.addCollection('folder');
-                    AddFolderAction({name:'收件箱',sort:1});
-                    AddFolderAction({name:'购物',sort:2});
-                    AddFolderAction({name:'想看的电影',sort:3});
-                    AddFolderAction({name:'愿望列表',sort:4});
-                    AddFolderAction({name:'工作',sort:2});
+                    store.dispatch(AddFolderAction({ name: '收件箱', sort: 1 }));
+                    store.dispatch(AddFolderAction({ name: '购物', sort: 2 }));
+                    store.dispatch(AddFolderAction({ name: '想看的电影', sort: 3 }));
+                    store.dispatch(AddFolderAction({ name: '愿望列表', sort: 4 }));
+                    store.dispatch(AddFolderAction({ name: '工作', sort: 5 }));
+                    global.Loki.saveDatabase(callback);
                 }
-                callback();
+                else {
+                    callback();
+                }
+
             });
             //console.log('loki',global.Loki);
+        }
+        else {
+            callback();
         }
     }
 }

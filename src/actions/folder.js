@@ -19,6 +19,7 @@ export const SetFolderAction = (data) => (dispatch) => {
     return GetFolderAction(dispatch);
 }
 export const AddFolderAction = (data) => (dispatch) => {
+    console.log('插入分类')
     let lokiData = getData();
     data.sort = lokiData.maxId + 1;
     lokiData.insert(data);
