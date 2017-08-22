@@ -1,34 +1,22 @@
 {
-  "name": "noteApp",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "storybook": "storybook start -p 7007"
-  },
-  "dependencies": {
-    "react": "15.3.2",
-    "react-native": "0.35.0",
-    "react-native-navigation": "^2.0.0-experimental.133",
-    "react-native-storage": "^0.1.4",
-    "react-native-vector-icons": "^2.1.0",
-    "react-redux": "^4.4.5",
-    "redux": "^3.6.0",
-    "redux-thunk": "^2.1.0",
-    "lokijs": "^1.4.2",
-    "loki-react-native-asyncstorage-adapter": "^1.0.0"
-  },
-  "jest": {
-    "preset": "jest-react-native"
-  },
-  "devDependencies": {
-    "babel-jest": "16.0.0",
-    "babel-preset-react-native": "1.9.0",
-    "jest": "16.0.2",
-    "jest-react-native": "16.0.0",
-    "react-test-renderer": "15.3.2",
-    "whatwg-fetch": "1.0.0",
-    "@kadira/react-native-storybook": "^2.0.0"
-  }
+	"name": "noteapp",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"react": "16.0.0-alpha.12",
+		"react-native": "0.47.1"
+	},
+	"devDependencies": {
+		"babel-jest": "20.0.3",
+		"babel-preset-react-native": "3.0.0",
+		"jest": "20.0.4",
+		"react-test-renderer": "16.0.0-alpha.12"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
 }

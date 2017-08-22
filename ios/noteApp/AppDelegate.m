@@ -8,12 +8,9 @@
  */
 
 #import "AppDelegate.h"
-// **********************************************
-// *** DON'T MISS: THE NEXT LINE IS IMPORTANT ***
-// **********************************************
-#import "RCCManager.h"
-#import "RCTBundleURLProvider.h"
-#import "RCTRootView.h"
+
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
 
 @implementation AppDelegate
 
@@ -22,19 +19,9 @@
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-  jsCodeLocation = [NSURL URLWithString:@"http://192.168.1.6:8081/index.ios.bundle?platform=ios&dev=true"];
-  // **********************************************
-  // *** DON'T MISS: THIS IS HOW WE BOOTSTRAP *****
-  // **********************************************
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  self.window.backgroundColor = [UIColor whiteColor];
-  [[RCCManager sharedInstance] initBridgeWithBundleURL:jsCodeLocation];
-  
-  
-  /*
-   // original RN bootstrap - remove this part
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"noteApp"
+                                                      moduleName:@"noteapp"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
@@ -44,8 +31,6 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-   */
-   
   return YES;
 }
 
